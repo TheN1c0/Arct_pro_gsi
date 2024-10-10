@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Categoría</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Agregar Categoría</h1>
+    <form id="add-category-form">
+        <label for="category-name">Nombre de la Categoría:</label>
+        <input type="text" id="category-name" placeholder="Nombre de la Categoría" required>
+        <br>
+        <label for="category-description">Descripción:</label>
+        <textarea id="category-description" placeholder="Descripción" required></textarea>
+        <br>
+        <button type="submit">Agregar Categoría</button>
+    </form>
+    <div id="message"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#add-category-form').on('submit', function(event) {
+                event.preventDefault(); // Evita que el formulario se envíe de manera tradicional
+
+                // Obtén los valores del formulario
+                const categoryName = $('#category-name').val();
+                const categoryDescription = $('#category-description').val();
+
+                // Realiza la solicitud AJAX
+                $.ajax({
+                    url: 'http://localhost:8001/api/categorias/', // URL de la API para crear categorías
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        nombre: categoryName, // Enviar el nombre de la categoría
+                        descripcion: categoryDescription // Enviar la descripción
+                    }),
+                    success: function(response) {
+                        $('#message').text('Categoría agregada exitosamente');
+                        $('#add-category-form')[0].reset(); // Reinicia el formulario
+                    },
+                    error: function(xhr, status, error) {
+                        $('#message').text('Error al agregar la categoría: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
