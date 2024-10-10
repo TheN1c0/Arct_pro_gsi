@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Producto</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Agregar Producto</h1>
+    <form id="add-product-form">
+        <label for="product-id">ID del Producto:</label>
+        <input type="text" id="product-id" placeholder="ID del Producto" required>
+        <br>
+        <label for="product-cantidad">Precio:</label>
+        <input type="number" id="product-cantidad" placeholder="Cantidad" required step="0.01">
+        <br>
+        <button type="submit">Agregar Producto</button>
+    </form>
+    <div id="message"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#add-product-form').on('submit', function(event) {
+                event.preventDefault(); // Evita que el formulario se envíe de manera tradicional
+
+                // Obtén los valores del formulario
+                const productId = $('#product-id').val();
+                const productQuantity = $('#product-cantidad').val();
+
+                // Realiza la solicitud AJAX
+                $.ajax({
+                    url: 'http://localhost:8001/api/actualizar-stock/', // URL de la API
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id: productId,
+                        cantidad: productQuantity
+                    }),
+                    success: function(response) {
+                        $('#message').text('Producto agregado exitosamente');
+                        $('#add-product-form')[0].reset(); // Reinicia el formulario
+                    },
+                    error: function(xhr, status, error) {
+                        $('#message').text('Error al agregar el producto: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
