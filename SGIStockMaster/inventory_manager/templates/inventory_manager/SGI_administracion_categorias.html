@@ -45,6 +45,8 @@
             <label for="add-category-name">Nombre de la Categoría:</label>
             <input type="text" id="add-category-name" required>
             <br>
+            <textarea name="" id="add-category-description" required></textarea>
+            <br>
             <button type="submit">Agregar Categoría</button>
         </form>
         <button onclick="hideAddCategoryModal()">Cancelar</button>
@@ -89,13 +91,19 @@
             // Función para agregar una nueva categoría
             $('#add-category-form').on('submit', function(e) {
                 e.preventDefault();
+
+                //variables para cargar y enviar, son las que se usan en el json
                 const categoryName = $('#add-category-name').val();
+                const categoryDescription = $('#add-category-description').val();
 
                 $.ajax({
                     url: 'http://localhost:8001/api/categorias/',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({ nombre: categoryName }),
+                    //aqui está el json--------------------------------------
+                    data: JSON.stringify({ nombre: categoryName,
+                                            descripcion: categoryDescription
+                     }),
                     success: function(response) {
                         alert(response.mensaje);
                         loadCategories(); // Recargar las categorías después de agregar una
