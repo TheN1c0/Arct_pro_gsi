@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Categorías</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Gestión de Categorías</h1>
+    
+    <!-- Tabla de categorías -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="category-table-body">
+            <!-- Filas dinámicas de categorías -->
+        </tbody>
+    </table>
+
+    <!-- Modal para editar categorías -->
+    <div id="edit-category-modal" style="display:none;">
+        <h2>Editar Categoría</h2>
+        <form id="edit-category-form">
+            <label for="edit-category-id">ID de la Categoría:</label>
+            <input type="text" id="edit-category-id" readonly>
+            <br>
+            <label for="edit-category-name">Nombre de la Categoría:</label>
+            <input type="text" id="edit-category-name" required>
+            <br>
+            <button type="submit">Guardar Cambios</button>
+        </form>
+        <button onclick="hideEditCategoryModal()">Cancelar</button>
+    </div>
+
+    <!-- Modal para agregar categorías -->
+    <div id="add-category-modal" style="display:none;">
+        <h2>Agregar Nueva Categoría</h2>
+        <form id="add-category-form">
+            <label for="add-category-name">Nombre de la Categoría:</label>
+            <input type="text" id="add-category-name" required>
+            <br>
+            <button type="submit">Agregar Categoría</button>
+        </form>
+        <button onclick="hideAddCategoryModal()">Cancelar</button>
+    </div>
+
+    <button onclick="showAddCategoryModal()">Agregar Categoría</button>
+
+    <script>
+        $(document).ready(function() {
+            loadCategories();
+
+            // Cargar categorías desde la API
+            function loadCategories() {
+    $.ajax({
+        url: 'http://localhost:8001/api/categorias/',
+        type: 'GET',
+        success: function(response) {
+            const categoryTableBody = $('#category-table-body');
+            categoryTableBody.empty(); // Limpia la tabla antes de cargar las categorías
+
+            // Acceder a la propiedad 'categorias' en la respuesta
+            response.categorias.forEach(category => {
+                categoryTableBody.append(`
+                    <tr>
+                        <td>${category.idCategoria}</td>
+                        <td>${category.nombre}</td>
+                        <td>
+                            <button onclick="editCategory(${category.idCategoria}, '${category.nombre}')">Editar</button>
+                            <button onclick="deleteCategory(${category.idCategoria})">Eliminar</button>
+                        </td>
+                    </tr>
+                `);
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al cargar las categorías:', error);
+        }
+    });
+}
+
+
+            // Función para agregar una nueva categoría
+            $('#add-category-form').on('submit', function(e) {
+                e.preventDefault();
+                const categoryName = $('#add-category-name').val();
+
+                $.ajax({
+                    url: 'http://localhost:8001/api/categorias/',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ nombre: categoryName }),
+                    success: function(response) {
+                        alert(response.mensaje);
+                        loadCategories(); // Recargar las categorías después de agregar una
+                        hideAddCategoryModal(); // Ocultar modal
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al agregar la categoría:', error);
+                    }
+                });
+            });
+
+            // Función para editar categoría
+            window.editCategory = function(id, nombre) {
+                $('#edit-category-id').val(id);
+                $('#edit-category-name').val(nombre);
+                $('#edit-category-modal').show();
+            }
+
+            // Función para ocultar modal de edición de categoría
+            window.hideEditCategoryModal = function() {
+                $('#edit-category-modal').hide();
+            }
+
+            // Función para ocultar modal de agregar categoría
+            window.hideAddCategoryModal = function() {
+                $('#add-category-modal').hide();
+            }
+
+            // Función para mostrar modal de agregar categoría
+            window.showAddCategoryModal = function() {
+                $('#add-category-modal').show();
+            }
+
+            // Función para eliminar categoría
+            window.deleteCategory = function(id) {
+                if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
+                    $.ajax({
+                        url: `http://localhost:8001/api/categorias/${id}/`,
+                        type: 'DELETE',
+                        success: function(response) {
+                            alert('Categoría eliminada correctamente');
+                            loadCategories(); // Recargar categorías
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error al eliminar la categoría:', error);
+                        }
+                    });
+                }
+            }
+
+            // Manejo del formulario de edición de categoría
+            $('#edit-category-form').on('submit', function(e) {
+                e.preventDefault();
+                const categoryId = $('#edit-category-id').val();
+                const categoryName = $('#edit-category-name').val();
+
+                $.ajax({
+                    url: `http://localhost:8001/api/categorias/${categoryId}/`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ nombre: categoryName }),
+                    success: function(response) {
+                        alert(response.mensaje);
+                        loadCategories(); // Recargar categorías
+                        hideEditCategoryModal(); // Ocultar modal
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al editar la categoría:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
