@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Gestión de Pedidos</h1>
+    
+    <!-- Tabla de pedidos -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Estado</th>
+                <th>Monto Total</th>
+                <th>Fecha de Creación</th>
+                <th>Última Actualización</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="order-table-body">
+            <!-- Filas dinámicas de pedidos -->
+        </tbody>
+    </table>
+
+    <!-- Modal para editar pedidos -->
+    <div id="edit-order-modal" style="display:none;">
+        <h2>Editar Pedido</h2>
+        <form id="edit-order-form">
+            <label for="edit-order-id">ID del Pedido:</label>
+            <input type="text" id="edit-order-id" readonly>
+            <br>
+            <label for="edit-order-name">Nombre:</label>
+            <input type="text" id="edit-order-name" required>
+            <br>
+            <label for="edit-order-lastname">Apellido:</label>
+            <input type="text" id="edit-order-lastname" required>
+            <br>
+            <label for="edit-order-status">Estado:</label>
+            <input type="text" id="edit-order-status" required>
+            <br>
+            <label for="edit-order-total">Monto Total:</label>
+            <input type="number" id="edit-order-total" required>
+            <br>
+            <button type="submit">Guardar Cambios</button>
+        </form>
+        <button onclick="hideEditOrderModal()">Cancelar</button>
+    </div>
+
+    <!-- Modal para agregar pedidos -->
+    <div id="add-order-modal" style="display:none;">
+        <h2>Agregar Nuevo Pedido</h2>
+        <form id="add-order-form">
+            <label for="add-order-name">Nombre:</label>
+            <input type="text" id="add-order-name" required>
+            <br>
+            <label for="add-order-lastname">Apellido:</label>
+            <input type="text" id="add-order-lastname" required>
+            <br>
+            <label for="add-order-total">Monto Total:</label>
+            <input type="number" id="add-order-total" required>
+            <br>
+            <label for="add-order-status">Estado:</label>
+            <input type="text" id="add-order-status" required>
+            <br>
+            <button type="submit">Agregar Pedido</button>
+        </form>
+        <button onclick="hideAddOrderModal()">Cancelar</button>
+    </div>
+
+    <button onclick="showAddOrderModal()">Agregar Pedido</button>
+
+    <script>
+        $(document).ready(function() {
+            loadOrders();
+
+            // Cargar pedidos desde la API
+            function loadOrders() {
+                $.ajax({
+                    url: 'http://localhost:8001/api/pedidos/',
+                    type: 'GET',
+                    success: function(response) {
+                        const orderTableBody = $('#order-table-body');
+                        orderTableBody.empty(); // Limpia la tabla antes de cargar los pedidos
+
+                        // Acceder a la propiedad 'pedidos' en la respuesta
+                        response.pedidos.forEach(order => {
+                            orderTableBody.append(`
+                                <tr>
+                                    <td>${order.id}</td>
+                                    <td>${order.nombre}</td>
+                                    <td>${order.apellido}</td>
+                                    <td>${order.estado}</td>
+                                    <td>${order.monto_total}</td>
+                                    <td>${order.created_at}</td>
+                                    <td>${order.updated_at}</td>
+                                    <td>
+                                        <button onclick="editOrder(${order.id}, '${order.nombre}', '${order.apellido}', '${order.estado}', ${order.total})">Editar</button>
+                                        <button onclick="deleteOrder(${order.id})">Eliminar</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al cargar los pedidos:', error);
+                    }
+                });
+            }
+
+            // Función para agregar un nuevo pedido
+            $('#add-order-form').on('submit', function(e) {
+                e.preventDefault();
+
+                const orderName = $('#add-order-name').val();
+                const orderLastname = $('#add-order-lastname').val();
+                const orderTotal = $('#add-order-total').val();
+                const orderStatus = $('#add-order-status').val();
+
+                $.ajax({
+                    url: 'http://localhost:8001/api/pedidos/',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        nombre: orderName,
+                        apellido: orderLastname,
+                        monto_total: orderTotal,
+                        estado: orderStatus
+                    }),
+                    success: function(response) {
+                        alert(response.mensaje);
+                        loadOrders(); // Recargar los pedidos después de agregar uno
+                        hideAddOrderModal(); // Ocultar modal
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al agregar el pedido:', error);
+                    }
+                });
+            });
+
+            // Función para editar pedido
+            window.editOrder = function(id, nombre, apellido, estado, total) {
+                $('#edit-order-id').val(id);
+                $('#edit-order-name').val(nombre);
+                $('#edit-order-lastname').val(apellido);
+                $('#edit-order-status').val(estado);
+                $('#edit-order-total').val(total);
+                $('#edit-order-modal').show();
+            }
+
+            // Función para ocultar modal de edición de pedido
+            window.hideEditOrderModal = function() {
+                $('#edit-order-modal').hide();
+            }
+
+            // Función para ocultar modal de agregar pedido
+            window.hideAddOrderModal = function() {
+                $('#add-order-modal').hide();
+            }
+
+            // Función para mostrar modal de agregar pedido
+            window.showAddOrderModal = function() {
+                $('#add-order-modal').show();
+            }
+
+            // Función para eliminar pedido
+            window.deleteOrder = function(id) {
+                if (confirm('¿Estás seguro de que deseas eliminar este pedido?')) {
+                    $.ajax({
+                        url: `http://localhost:8001/api/pedidos/${id}/`,
+                        type: 'DELETE',
+                        success: function(response) {
+                            alert('Pedido eliminado correctamente');
+                            loadOrders(); // Recargar pedidos
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error al eliminar el pedido:', error);
+                        }
+                    });
+                }
+            }
+
+            // Manejo del formulario de edición de pedido
+            $('#edit-order-form').on('submit', function(e) {
+                e.preventDefault();
+                const orderId = $('#edit-order-id').val();
+                const orderName = $('#edit-order-name').val();
+                const orderLastname = $('#edit-order-lastname').val();
+                const orderTotal = $('#edit-order-total').val();
+                const orderStatus = $('#edit-order-status').val();
+
+                $.ajax({
+                    url: `http://localhost:8001/api/pedidos/${orderId}/`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        nombre: orderName,
+                        apellido: orderLastname,
+                        monto_total: orderTotal,
+                        estado: orderStatus
+                    }),
+                    success: function(response) {
+                        alert(response.mensaje);
+                        loadOrders(); // Recargar pedidos
+                        hideEditOrderModal(); // Ocultar modal
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al editar el pedido:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

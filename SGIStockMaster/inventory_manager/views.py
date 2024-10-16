@@ -6,3 +6,6 @@ def agregar_producto(request):
 
 def administracion_categorias(request):
     return render(request, 'inventory_manager/SGI_administracion_categorias.html')
+
+def administracion_pedidos(request):
+    return render(request, 'inventory_manager/SGI_administracion_pedidos.html')
