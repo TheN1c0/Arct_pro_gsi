@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-form {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">SGIStockMaster</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Sobre Nosotros</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contacto</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-form">
+            <h2 class="text-center">Iniciar Sesión</h2>
+            <form>
+                <div class="form-group">
+                    <label for="admin-email">Email (Administrador)</label>
+                    <input type="email" class="form-control" id="admin-email" placeholder="Introduce tu email">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Contraseña</label>
+                    <input type="password" class="form-control" id="admin-password" placeholder="Introduce tu contraseña">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión como Administrador</button>
+
+                <hr>
+
+                <div class="form-group">
+                    <label for="collaborator-email">Email (Colaborador)</label>
+                    <input type="email" class="form-control" id="collaborator-email" placeholder="Introduce tu email">
+                </div>
+                <div class="form-group">
+                    <label for="collaborator-password">Contraseña</label>
+                    <input type="password" class="form-control" id="collaborator-password" placeholder="Introduce tu contraseña">
+                </div>
+                <button type="submit" class="btn btn-success btn-block">Iniciar Sesión como Colaborador</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.11/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

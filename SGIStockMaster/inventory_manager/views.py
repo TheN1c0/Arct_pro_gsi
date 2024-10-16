@@ -9,3 +9,6 @@ def administracion_categorias(request):
 
 def administracion_pedidos(request):
     return render(request, 'inventory_manager/SGI_administracion_pedidos.html')
+
+def inicio(request):
+    return render(request, 'inventory_manager/SGI_inicio.html')
