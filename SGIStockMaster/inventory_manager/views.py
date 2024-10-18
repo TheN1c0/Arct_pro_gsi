@@ -15,3 +15,5 @@ def inicio(request):
 
 def registrarse(request):
     return render(request, 'inventory_manager/SGI_registrarse.html')
+def dashboard(request):
+    return render(request, 'inventory_manager/SGI_dashboard.html')

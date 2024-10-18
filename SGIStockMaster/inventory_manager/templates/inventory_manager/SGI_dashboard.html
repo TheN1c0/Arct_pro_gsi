@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Asegúrate de tener un archivo CSS si deseas estilos -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            background: #007BFF;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            margin: 20px 0;
+        }
+        nav a {
+            margin: 10px;
+            padding: 10px 15px;
+            background: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background: #0056b3;
+        }
+        .content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <script>
+        // Verificar si existe el token en localStorage y si es válido
+        window.onload = async function() {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                // Si no hay token, redirigir al login
+                window.location.href = "{% url 'inicio' %}";
+                alert("Si no hay token, redirigir al login");
+                return;
+            }
+
+            try {
+                // Verifica el token haciendo una petición al backend
+                const response = await fetch('http://localhost:8001/api/token/verify/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` // Enviar el token en el encabezado
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                if (!response.ok) {
+                    // Si el token no es válido o está expirado, redirigir al login
+                    localStorage.removeItem('access_token');
+                    alert("Si el token no es válido o está expirado, redirigir al login");
+
+                    window.location.href = "{% url 'inicio' %}";
+                }
+            } catch (error) {
+                console.error('Error verificando el token:', error);
+                alert('Error verificando el token:');
+                window.location.href = "{% url 'inicio' %}";
+            }
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Bienvenido al Panel de Control</h1>
+    </header>
+    
+    <nav>
+        <a href="{% url 'agregar_producto' %}">Agregar Productos</a>
+        <a href=>Agregar Pedidos</a>
+        <a href="ver_productos.html">Ver Productos</a>
+        <a href="ver_pedidos.html">Ver Pedidos</a>
+        <a href="logout.html">Cerrar Sesión</a>
+    </nav>
+
+    <div class="content">
+        <h2>Opciones Disponibles</h2>
+        <p>Seleccione una opción en el menú para continuar.</p>
+    </div>
+</body>
+</html>

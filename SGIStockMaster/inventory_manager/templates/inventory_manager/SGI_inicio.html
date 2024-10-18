@@ -124,8 +124,11 @@
 
             if (response.ok) {
                 const data = await response.json();
-                alert('Inicio de sesión exitoso. Token: ' + data.access);
+
+                localStorage.setItem('token', data.access);
+                alert('Inicio de sesión exitoso. Token guardado en localStorage.');
                 // Aquí puedes redirigir a la página principal o hacer lo que necesites
+                window.location.href = '{% url "dashboard" %}';
             } else {
                 alert('Error en el inicio de sesión. Por favor verifica tus credenciales.');
             }
