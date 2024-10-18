@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -29,9 +29,6 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">SGIStockMaster</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
@@ -50,7 +47,7 @@
     <div class="login-container">
         <div class="login-form">
             <h2 class="text-center">Iniciar Sesión</h2>
-            <form>
+            <form id="login-form">
                 <div class="form-group">
                     <label for="admin-email">Email (Administrador)</label>
                     <input type="email" class="form-control" id="admin-email" placeholder="Introduce tu email">
@@ -73,11 +70,66 @@
                 </div>
                 <button type="submit" class="btn btn-success btn-block">Iniciar Sesión como Colaborador</button>
             </form>
+
+            <hr>
+            <p class="text-center">
+                ¿No tienes cuenta? <a href="{% url 'registrarse' %}">Regístrate aquí</a>
+            </p>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.11/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Manejar el inicio de sesión
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const emailAdmin = document.getElementById('admin-email').value;
+            const passwordAdmin = document.getElementById('admin-password').value;
+            const emailCollaborator = document.getElementById('collaborator-email').value;
+            const passwordCollaborator = document.getElementById('collaborator-password').value;
+
+            let url, credentials;
+
+            // Verifica si se ingresó el email y la contraseña del administrador
+            if (emailAdmin && passwordAdmin) {
+                url = 'http://localhost:8001/api/token/';
+                credentials = {
+                    email: emailAdmin,
+                    password: passwordAdmin
+                };
+            }
+            // Verifica si se ingresó el email y la contraseña del colaborador
+            else if (emailCollaborator && passwordCollaborator) {
+                url = 'http://localhost:8001/api/token/';
+                credentials = {
+                    email: emailCollaborator,
+                    password: passwordCollaborator
+                };
+            } else {
+                alert('Por favor, introduce tus credenciales.');
+                return;
+            }
+
+            // Hacer la solicitud a la API
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(credentials)
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert('Inicio de sesión exitoso. Token: ' + data.access);
+                // Aquí puedes redirigir a la página principal o hacer lo que necesites
+            } else {
+                alert('Error en el inicio de sesión. Por favor verifica tus credenciales.');
+            }
+        });
+    </script>
 </body>
 </html>

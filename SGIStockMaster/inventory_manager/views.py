@@ -12,3 +12,6 @@ def administracion_pedidos(request):
 
 def inicio(request):
     return render(request, 'inventory_manager/SGI_inicio.html')
+
+def registrarse(request):
+    return render(request, 'inventory_manager/SGI_registrarse.html')

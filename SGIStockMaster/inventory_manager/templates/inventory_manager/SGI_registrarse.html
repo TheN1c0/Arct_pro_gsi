@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .register-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .register-form {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">SGIStockMaster</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Sobre Nosotros</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contacto</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="register-container">
+        <div class="register-form">
+            <h2 class="text-center">Crear Usuario</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="new-username">Nombre de Usuario</label>
+                    <input type="text" class="form-control" id="new-username" placeholder="Introduce tu nombre de usuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-email">Email</label>
+                    <input type="email" class="form-control" id="new-email" placeholder="Introduce tu email" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Contraseña</label>
+                    <input type="password" class="form-control" id="new-password" placeholder="Introduce tu contraseña" required>
+                </div>
+                <div class="form-group">
+                    <label for="is-admin">¿Es administrador?</label>
+                    <select class="form-control" id="is-admin">
+                        <option value="false">No</option>
+                        <option value="true">Sí</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-info btn-block">Crear Usuario</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.11/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Manejar la creación de un nuevo usuario
+        document.getElementById('register-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const username = document.getElementById('new-username').value;
+            const email = document.getElementById('new-email').value;
+            const password = document.getElementById('new-password').value;
+            const is_admin = document.getElementById('is-admin').value === 'true';
+            console.log({ username, email, password, is_admin });
+
+            const url = 'http://localhost:8001/api/usuarios/'; // Cambia esta URL si es necesario
+
+            // Hacer la solicitud a la API para crear un nuevo usuario
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, email, password, is_admin })
+            });
+
+            if (response.ok) {
+                alert('Usuario creado exitosamente. Puedes iniciar sesión ahora.');
+                window.location.href = 'http://localhost:8000/'; // Redirige a la página de inicio de sesión
+            } else {
+                alert('Error al crear el usuario. Por favor verifica los datos ingresados.');
+            }
+        });
+    </script>
+</body>
+</html>
