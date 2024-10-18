@@ -4,33 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Producto</title>
+    <!-- Incluye Bootstrap para un diseño moderno y responsivo -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body>
-    <h1>Agregar Producto</h1>
-    <form id="add-product-form">
-        <label for="product-id">ID del Producto:</label>
-        <input type="text" id="product-id" placeholder="ID del Producto" required>
-        <br>
-        <label for="product-cantidad">Cantidad:</label>
-        <input type="number" id="product-cantidad" placeholder="Cantidad" required step="0.01">
-        <br>
-        <button type="submit">Agregar Producto</button>
-    </form>
-    <div id="message"></div>
+<body class="bg-light">
 
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">Agregar Producto</h2>
+                        <form id="add-product-form">
+                            <div class="mb-3">
+                                <label for="product-id" class="form-label">ID del Producto:</label>
+                                <input type="text" class="form-control" id="product-id" placeholder="ID del Producto" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="product-cantidad" class="form-label">Cantidad:</label>
+                                <input type="number" class="form-control" id="product-cantidad" placeholder="Cantidad" required step="0.01">
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                            </div>
+                        </form>
+                        <div id="message" class="mt-3 text-center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para manejar la funcionalidad del formulario -->
     <script>
         $(document).ready(function() {
             $('#add-product-form').on('submit', function(event) {
-                event.preventDefault(); // Evita que el formulario se envíe de manera tradicional
+                event.preventDefault();
 
-                // Obtén los valores del formulario
                 const productId = $('#product-id').val();
                 const productQuantity = $('#product-cantidad').val();
 
-                // Realiza la solicitud AJAX
                 $.ajax({
-                    url: 'http://localhost:8001/api/actualizar-stock/', // URL de la API
+                    url: 'http://localhost:8001/api/actualizar-stock/',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({
@@ -38,15 +54,19 @@
                         cantidad: productQuantity
                     }),
                     success: function(response) {
-                        $('#message').text('Producto agregado exitosamente');
-                        $('#add-product-form')[0].reset(); // Reinicia el formulario
+                        $('#message').html('<div class="alert alert-success">Producto agregado exitosamente</div>');
+                        $('#add-product-form')[0].reset();
                     },
                     error: function(xhr, status, error) {
-                        $('#message').text('Error al agregar el producto: ' + error);
+                        $('#message').html('<div class="alert alert-danger">Error al agregar el producto: ' + error + '</div>');
                     }
                 });
             });
         });
     </script>
+
+    <!-- Bootstrap JS para interactividad -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
