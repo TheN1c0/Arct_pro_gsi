@@ -161,8 +161,6 @@
                                 {% if categoria.productos %}
                                     {% for producto in categoria.productos %}
                                         <div class="producto-card">
-                                            <!-- Aquí puedes colocar la URL de la imagen del producto si la tienes -->
-                                            <img src="https://via.placeholder.com/150" alt="Imagen del producto">
                                             <h3>{{ producto.nombre }}</h3>
                                             <p>Precio: ${{ producto.price }}</p>
                                             <p>Stock: {{ producto.stock }}</p>
