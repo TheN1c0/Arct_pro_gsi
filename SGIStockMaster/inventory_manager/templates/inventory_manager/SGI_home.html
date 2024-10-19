@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supermercado - Categorías y Productos</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .categorias-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .categoria-section {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .productos-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .producto-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 6px;
+            width: 200px;
+        }
+
+        .producto-card h3 {
+            margin: 0 0 10px;
+        }
+
+    </style>
+
+</head>
+<body>
+    <h1>Categorías y Productos</h1>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% else %}
+        <div class="categorias-container">
+            {% for categoria_id, categoria in categorias.items %}
+                <section class="categoria-section">
+                    <h2>{{ categoria.nombre }}</h2>
+                    <p>{{ categoria.descripcion }}</p>
+
+                    <div class="productos-container">
+                        {% if categoria.productos %}
+                            {% for producto in categoria.productos %}
+                                <div class="producto-card">
+                                    <h3>{{ producto.nombre }}</h3>
+                                    <p>Precio: ${{ producto.price }}</p>
+                                    <p>Stock: {{ producto.stock }}</p>
+                                    <p>{{ producto.descripcion }}</p>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No hay productos en esta categoría.</p>
+                        {% endif %}
+                    </div>
+                </section>
+            {% endfor %}
+        </div>
+    {% endif %}
+</body>
+</html>
