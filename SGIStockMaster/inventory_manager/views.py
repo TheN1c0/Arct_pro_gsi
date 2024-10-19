@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import requests
 
 # Create your views here.
 def agregar_producto(request):
@@ -19,16 +20,13 @@ def registrarse(request):
 def dashboard(request):
     return render(request, 'inventory_manager/SGI_dashboard.html')
 
-def homee(request):
-    return render(request,'inventory_manager/SGI_home.html')
-
 import requests
 from django.shortcuts import render
 
-def home(request):
+def homee(request):
     # URL de la API (ajústala según tu configuración)
-    categorias_url = 'http://127.0.0.1:8000/api/categorias/'
-    productos_url = 'http://127.0.0.1:8000/api/productos/'
+    categorias_url = 'http://127.0.0.1:8001/api/categorias/'
+    productos_url = 'http://127.0.0.1:8001/api/productos/'
 
     # Realiza las solicitudes GET a la API
     categorias_response = requests.get(categorias_url)
@@ -36,7 +34,6 @@ def home(request):
 
     # Verifica que la respuesta sea exitosa (código 200)
     if categorias_response.status_code == 200 and productos_response.status_code == 200:
-        # Parseamos los datos de la API en formato JSON
         categorias_data = categorias_response.json().get('categorias', [])
         productos_data = productos_response.json().get('productos', [])
 
@@ -59,10 +56,9 @@ def home(request):
         context = {
             'categorias': categorias_con_productos
         }
-        return render(request, 'home.html', context)
+        return render(request, 'inventory_manager/SGI_home.html', context)
     else:
-        # Manejo de errores en caso de que la API falle
         context = {
             'error': 'No se pudieron cargar los datos de las categorías y productos'
         }
-        return render(request, 'home.html', context)
+        return render(request, 'inventory_manager/SGI_home.html', context)
