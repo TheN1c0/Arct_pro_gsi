@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías y Productos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: #f5f6fa;
+        }
+        /* Contenedor principal */
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+        /* Estilos para el menú lateral */
+        .sidebar {
+            width: 250px;
+            background-color: #2f3640;
+            color: #f5f6fa;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar h1 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: #f39c12;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+        .sidebar ul li a {
+            color: #f5f6fa;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px;
+            display: block;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .sidebar ul li a:hover {
+            background-color: #f39c12;
+        }
+
+        /* Estilos para el contenido de categorías y productos */
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        .categoria-section {
+            margin-bottom: 40px;
+        }
+        .categoria-section h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #2f3640;
+        }
+        .categoria-section p {
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+
+        /* Estilos para los productos */
+        .productos-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .producto-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            width: calc(33.333% - 40px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .producto-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .producto-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2f3640;
+        }
+        .producto-card p {
+            margin-bottom: 10px;
+            color: #7f8c8d;
+        }
+
+      
+        .producto-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Estilos para el scroll-behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Media queries para pantallas pequeñas */
+        @media (max-width: 768px) {
+            .producto-card {
+                width: calc(50% - 40px);
+            }
+        }
+        @media (max-width: 480px) {
+            .producto-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Menú lateral -->
+        <nav class="sidebar">
+            <h1>Categorías</h1>
+            <ul>
+                {% for categoria_id, categoria in categorias.items %}
+                    <li><a href="#categoria-{{ categoria_id }}">{{ categoria.nombre }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <!-- Contenido de categorías y productos -->
+        <div class="content">
+            {% if error %}
+                <p>{{ error }}</p>
+            {% else %}
+                <h1>Categorías y Productos</h1>
+                <div class="categorias-container">
+                    {% for categoria_id, categoria in categorias.items %}
+                        <section id="categoria-{{ categoria_id }}" class="categoria-section">
+                            <h2>{{ categoria.nombre }}</h2>
+                            <p>{{ categoria.descripcion }}</p>
+
+                            <div class="productos-container">
+                                {% if categoria.productos %}
+                                    {% for producto in categoria.productos %}
+                                        <div class="producto-card">
+                                            <h3>{{ producto.nombre }}</h3>
+                                            <p>Precio: ${{ producto.price }}</p>
+                                            <p>Stock: {{ producto.stock }}</p>
+                                            <p>{{ producto.descripcion }}</p>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <p>No hay productos en esta categoría.</p>
+                                {% endif %}
+                            </div>
+                        </section>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
