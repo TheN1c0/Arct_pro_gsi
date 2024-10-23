@@ -12,5 +12,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),  
     path('productos_stock/', views.productos_stock, name='productos_stock'),  
     path('home/', views.homee, name='home'),
+    path('recuperar_contrasena/', views.recuperar_contrasena, name='recuperar_contrasena'),
+    path('restablecer_contrasena/<str:uidb64>/<str:token>/', views.restablecer_contrasena, name='restablecer_contrasena'),
     
 ]

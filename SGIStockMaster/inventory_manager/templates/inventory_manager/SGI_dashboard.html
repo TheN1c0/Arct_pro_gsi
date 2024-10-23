@@ -84,10 +84,9 @@
     
     <nav>
         <a href="{% url 'agregar_producto' %}">Agregar Productos</a>
-        <a href=>Agregar Pedidos</a>
         <a href="{% url 'productos_stock'%}">Ver Productos</a>
-        <a href="ver_pedidos.html">Ver Pedidos</a>
-        <a href="logout.html">Cerrar Sesión</a>
+        <a href="{% url 'administracion_pedidos' %}">Ver Pedidos</a>
+        <a onclick="logout()">Cerrar Sesión</a>
     </nav>
 
     <div class="content">
@@ -95,4 +94,13 @@
         <p>Seleccione una opción en el menú para continuar.</p>
     </div>
 </body>
+
+
+
+<script>
+function logout() {
+    localStorage.clear();  // Borra todo el localStorage
+    window.location.href = '/inicio/';  // Redirige a la página de inicio
+}
+</script>
 </html>

@@ -52,11 +52,11 @@
             <form id="login-form">
                 <div class="form-group">
                     <label for="admin-email">Email (Administrador)</label>
-                    <input type="email" class="form-control" id="admin-email" placeholder="Introduce tu email">
+                    <input type="email" class="form-control" id="admin-email" placeholder="Introduce tu email" value="unadmin@gmail.com">
                 </div>
                 <div class="form-group">
                     <label for="admin-password">Contraseña</label>
-                    <input type="password" class="form-control" id="admin-password" placeholder="Introduce tu contraseña">
+                    <input type="password" class="form-control" id="admin-password" placeholder="Introduce tu contraseña" value="unadmin">
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión como Administrador</button>
 
@@ -76,6 +76,9 @@
             <hr>
             <p class="text-center">
                 ¿No tienes cuenta? <a href="{% url 'registrarse' %}">Regístrate aquí</a>
+            </p>
+            <p class="text-center">
+                ¿Olvidaste tu contraseña? <a href="{% url 'recuperar_contrasena' %}">Recuperar contraseña</a>
             </p>
         </div>
     </div>
