@@ -27,6 +27,8 @@ def administracion_productos(request):
 
 def recuperar_contrasena(request):
     return render(request, 'inventory_manager/SGI_recuperar_contrasena.html')
+def colaborador_dashboard(request):
+    return render(request, 'inventory_manager/SGI_colaborador_dashboard.html')
 
 
 from django.contrib.auth.tokens import default_token_generator

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Gestión de Inventario</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #3a7bd5;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
+
+    .card {
+      width: 300px;
+      background-color: white;
+      margin: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      background-color: #3a7bd5;
+      color: white;
+      padding: 15px;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .card p {
+      padding: 15px;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    .card a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      background-color: #3a7bd5;
+      padding: 10px;
+      margin: 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .card a:hover {
+      background-color: #2f5da3;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Dashboard de Gestión de Inventario
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h3>Agregar Producto</h3>
+      <p>Registra un nuevo producto en el inventario y añade sus detalles.</p>
+      <a href="{% url 'agregar_producto' %}">Ir a Agregar Producto</a>
+    </div>
+
+    <div class="card">
+      <h3>Ver Stock</h3>
+      <p>Consulta el inventario actual y verifica la cantidad disponible.</p>
+      <a href="{% url 'home' %}">Ir a Ver Stock</a>
+    </div>
+
+    <div class="card">
+      <h3>Actualizar Estado de Pedidos</h3>
+      <p>Modifica el estado de los pedidos según el progreso de su entrega.</p>
+      <a href="actualizar_estado.html">Ir a Actualizar Estado</a>
+    </div>
+
+    <div class="card">
+      <h3>Historial de Movimientos</h3>
+      <p>Consulta el historial de entradas y salidas de productos del inventario.</p>
+      <a href="historial_movimientos.html">Ir a Historial</a>
+    </div>
+
+    <div class="card">
+      <h3>Reportes</h3>
+      <p>Genera reportes detallados del inventario y estado de pedidos.</p>
+      <a href="reportes.html">Ir a Reportes</a>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2024 Sistema de Gestión de Inventario - Todos los derechos reservados.
+  </footer>
+</body>
+</html>
