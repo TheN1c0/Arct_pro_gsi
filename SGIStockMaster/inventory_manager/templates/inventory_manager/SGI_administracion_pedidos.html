@@ -191,12 +191,14 @@
     
     // Crear el objeto con la información del pedido principal
     const orderData = {
+    datos_principales: JSON.stringify({
         nombre: $('#add-order-name').val(),
         apellido: $('#add-order-lastname').val(),
         estado: $('#add-order-status').val(),
         monto_total: $('#add-order-total').val(),
-        detalles: detallesEstructurados // Aquí se envían los detalles del pedido
-    };
+    }),
+    detalles: JSON.stringify(detallesEstructurados) // Detalles separados
+};
 
     // Realizar la solicitud POST
     $.ajax({
