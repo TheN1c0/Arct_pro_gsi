@@ -30,6 +30,9 @@ def recuperar_contrasena(request):
 def colaborador_dashboard(request):
     return render(request, 'inventory_manager/SGI_colaborador_dashboard.html')
 
+def ver_pedidos(request):
+    return render(request, 'inventory_manager/SGI_ver_pedidos.html')
+
 
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos</title>
+    <!-- Integración de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-light">
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Gestión de Pedidos</h1>
+
+        <!-- Sección para mostrar la lista de pedidos -->
+        <div class="card p-3 mb-4">
+            <h2 class="h5">Lista de Pedidos</h2>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Estado</th>
+                        <th>Monto Total</th>
+                    </tr>
+                </thead>
+                <tbody id="order-list-body">
+                    <!-- Los pedidos se mostrarán aquí -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sección para mostrar detalles del pedido -->
+        <div class="card p-3 mb-4">
+            <h2 class="h5">Detalles del Pedido</h2>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody id="order-details-body">
+                    <!-- Detalles del pedido se mostrarán aquí -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mensaje de éxito o error -->
+        <div id="message" class="mt-4"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Cargar pedidos desde la API
+            $.ajax({
+                url: 'http://localhost:8001/api/ver_pedidos/', // URL actualizada
+                type: 'GET',
+                success: function(response) {
+                    const orderListBody = $('#order-list-body');
+                    orderListBody.empty(); // Limpiar tabla antes de cargar pedidos
+
+                    response.pedidos.forEach(order => {
+                        orderListBody.append(`
+                            <tr onclick="mostrarDetalles(${order.id})">
+                                <td>${order.id}</td>
+                                <td>${order.nombre}</td>
+                                <td>${order.apellido}</td>
+                                <td>${order.estado}</td>
+                                <td>${order.monto_total.toFixed(2)}</td>
+                            </tr>
+                        `);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al cargar los pedidos:', error);
+                }
+            });
+
+            // Función para mostrar detalles del pedido
+            window.mostrarDetalles = function(idPedido) {
+                $.ajax({
+                    url: `http://localhost:8001/api/ver_detalles/${idPedido}/`, // URL actualizada
+                    type: 'GET',
+                    success: function(response) {
+                        const orderDetailsBody = $('#order-details-body');
+                        orderDetailsBody.empty(); // Limpiar detalles anteriores
+
+                        response.detalles.forEach(detalle => {
+                            orderDetailsBody.append(`
+                                <tr>
+                                    <td>${detalle.nombre}</td>
+                                    <td>${detalle.precio.toFixed(2)}</td>
+                                    <td>${detalle.cantidad}</td>
+                                </tr>
+                            `);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al cargar los detalles del pedido:', error);
+                    }
+                });
+            };
+        });
+    </script>
+</body>
+</html>
