@@ -54,56 +54,70 @@
 
     <script>
         $(document).ready(function() {
-            // Cargar pedidos desde la API
-            $.ajax({
-                url: 'http://localhost:8001/api/ver_pedidos/', // URL actualizada
-                type: 'GET',
-                success: function(response) {
-                    const orderListBody = $('#order-list-body');
-                    orderListBody.empty(); // Limpiar tabla antes de cargar pedidos
+    // Cargar pedidos desde la API
+    $.ajax({
+        url: 'http://localhost:8001/api/ver_pedidos/',
+        type: 'GET',
+        success: function(response) {
+            const orderListBody = $('#order-list-body');
+            orderListBody.empty(); // Limpiar tabla antes de cargar pedidos
 
-                    response.pedidos.forEach(order => {
-                        orderListBody.append(`
-                            <tr onclick="mostrarDetalles(${order.id})">
-                                <td>${order.id}</td>
-                                <td>${order.nombre}</td>
-                                <td>${order.apellido}</td>
-                                <td>${order.estado}</td>
-                                <td>${order.monto_total.toFixed(2)}</td>
+            response.pedidos.forEach(order => {
+                orderListBody.append(`
+                    <tr onclick="mostrarDetalles(${order.id})">
+                        <td>${order.id}</td>
+                        <td>${order.nombre}</td>
+                        <td>${order.apellido}</td>
+                        <td>${order.estado}</td>
+                        <td>${order.monto_total}</td>
+                    </tr>
+                `);
+            });
+
+            // Verificar si hay pedidos y mostrar detalles del primero
+            if (response.pedidos.length > 0) {
+                mostrarDetalles(response.pedidos[0].id); // Llamar a mostrarDetalles con el id del primer pedido
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al cargar los pedidos:', error);
+        }
+    });
+
+    // Función para mostrar detalles del pedido
+    window.mostrarDetalles = function(idPedido) {
+        $.ajax({
+            url: `http://localhost:8001/api/ver_detalles/${idPedido}/`,
+            type: 'GET',
+            success: function(response) {
+                console.log('ejecutando solicitud');
+                const orderDetailsBody = $('#order-details-body');
+                orderDetailsBody.empty(); // Limpiar detalles anteriores
+                console.log(response);
+                if (response.length > 0) {
+                    response.forEach(detalle => {
+                        orderDetailsBody.append(`
+                            <tr>
+                                <td>${detalle.precio}</td>
+                                <td>${detalle.cantidad}</td>
                             </tr>
                         `);
                     });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error al cargar los pedidos:', error);
+                } else {
+                    orderDetailsBody.append(`
+                        <tr>
+                            <td colspan="2">No hay detalles disponibles para este pedido.</td>
+                        </tr>
+                    `);
                 }
-            });
-
-            // Función para mostrar detalles del pedido
-            window.mostrarDetalles = function(idPedido) {
-                $.ajax({
-                    url: `http://localhost:8001/api/ver_detalles/${idPedido}/`, // URL actualizada
-                    type: 'GET',
-                    success: function(response) {
-                        const orderDetailsBody = $('#order-details-body');
-                        orderDetailsBody.empty(); // Limpiar detalles anteriores
-
-                        response.detalles.forEach(detalle => {
-                            orderDetailsBody.append(`
-                                <tr>
-                                    <td>${detalle.nombre}</td>
-                                    <td>${detalle.precio.toFixed(2)}</td>
-                                    <td>${detalle.cantidad}</td>
-                                </tr>
-                            `);
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error al cargar los detalles del pedido:', error);
-                    }
-                });
-            };
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al cargar los detalles del pedido:', error);
+            }
         });
+    };
+});
+
     </script>
 </body>
 </html>
