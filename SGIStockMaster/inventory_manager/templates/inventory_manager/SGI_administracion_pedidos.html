@@ -129,6 +129,7 @@
             // Función para agregar el producto al array detallesPedido
             window.agregarDetalleProducto = function(idProducto, nombre, precio) {
                 const cantidadInput = $(`#cantidad-${idProducto}`);
+                console.log('cantidadInput',cantidadInput);
                 const cantidad = parseInt(cantidadInput.val()) || 1;
                 const detalleExistente = detallesPedido.find(detalle => detalle.idProducto === idProducto);
                 const stockDisponible = parseInt(cantidadInput.attr('max')); // Obtener el stock máximo permitido
@@ -207,6 +208,7 @@
         contentType: 'application/json',
         data: JSON.stringify(orderData),
         success: function(response) {
+            
             $('#message').text('Pedido agregado exitosamente').addClass('alert alert-success');
             detallesPedido.length = 0; // Vaciar la lista de productos después de agregar el pedido
             $('#add-order-form')[0].reset(); // Reiniciar el formulario

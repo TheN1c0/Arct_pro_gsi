@@ -64,7 +64,7 @@
 
             response.pedidos.forEach(order => {
                 orderListBody.append(`
-                    <tr onclick="mostrarDetalles(${order.id})">
+                    <tr data-id="${order.id}" >
                         <td>${order.id}</td>
                         <td>${order.nombre}</td>
                         <td>${order.apellido}</td>
@@ -75,15 +75,20 @@
             });
 
             // Verificar si hay pedidos y mostrar detalles del primero
-            if (response.pedidos.length > 0) {
-                mostrarDetalles(response.pedidos[0].id); // Llamar a mostrarDetalles con el id del primer pedido
-            }
+            
         },
         error: function(xhr, status, error) {
             console.error('Error al cargar los pedidos:', error);
         }
     });
-
+    $('#order-list-body').on('click', 'tr', function() {
+    // Obtener el ID del pedido desde el atributo data-id
+    const idPedido = $(this).data('id');
+    console.log($(this).data);
+    console.log(idPedido);
+    console.log();
+    mostrarDetalles(idPedido);
+});
     // Función para mostrar detalles del pedido
     window.mostrarDetalles = function(idPedido) {
         $.ajax({
@@ -91,6 +96,8 @@
             type: 'GET',
             success: function(response) {
                 console.log('ejecutando solicitud');
+                console.log('idPedido', idPedido);
+                
                 const orderDetailsBody = $('#order-details-body');
                 orderDetailsBody.empty(); // Limpiar detalles anteriores
                 console.log(response);
