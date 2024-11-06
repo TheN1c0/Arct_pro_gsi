@@ -101,10 +101,14 @@
                 const orderDetailsBody = $('#order-details-body');
                 orderDetailsBody.empty(); // Limpiar detalles anteriores
                 console.log(response);
-                if (response.length > 0) {
-                    response.forEach(detalle => {
+                const detallesFiltrados = response.filter(detalle => detalle.pedido === idPedido);
+                console.log('detalles filtrados: ',detallesFiltrados);
+                
+                if (detallesFiltrados.length > 0) {
+                    detallesFiltrados.forEach(detalle => {
                         orderDetailsBody.append(`
                             <tr>
+                                <td>${detalle.id}</td>
                                 <td>${detalle.precio}</td>
                                 <td>${detalle.cantidad}</td>
                             </tr>
