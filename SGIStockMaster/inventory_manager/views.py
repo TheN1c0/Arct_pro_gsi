@@ -32,6 +32,8 @@ def colaborador_dashboard(request):
 
 def ver_pedidos(request):
     return render(request, 'inventory_manager/SGI_ver_pedidos.html')
+def control_de_stock(request):
+    return render(request, 'inventory_manager/SGI_control_de_stock.html')
 
 
 from django.contrib.auth.tokens import default_token_generator

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Gestión de Productos</h1>
+
+        <!-- Tabla de productos -->
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="product-table-body">
+                <!-- Filas dinámicas de productos -->
+            </tbody>
+        </table>
+
+        <!-- Formulario de control de stock -->
+        <div class="mt-4">
+            <h3>Actualizar Stock de Producto</h3>
+            <form id="stock-form">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="product-select" class="form-label">Seleccionar Producto</label>
+                        <select id="product-select" class="form-select">
+                            <!-- Opciones dinámicas de productos -->
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="stock-amount" class="form-label">Cantidad a Modificar</label>
+                        <input type="number" id="stock-amount" class="form-control" value="1" min="1">
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="button" id="increase-btn" class="btn btn-success me-2">+</button>
+                        <button type="button" id="decrease-btn" class="btn btn-danger">-</button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Actualizar Stock</button>
+            </form>
+        </div>
+
+    </div>
+
+    <button class="btn btn-secondary mt-4" onclick="window.history.back()">Volver Atrás</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            loadProducts();  // Cargar productos desde la API
+
+            // Cargar productos desde la API
+            function loadProducts() {
+                $.ajax({
+                    url: 'http://localhost:8001/api/productos/',
+                    type: 'GET',
+                    success: function(response) {
+                        const productTableBody = $('#product-table-body');
+                        const productSelect = $('#product-select');
+                        productTableBody.empty(); // Limpiar tabla antes de cargar productos
+                        productSelect.empty(); // Limpiar las opciones del select
+
+                        response.productos.forEach(product => {
+                            // Agregar fila a la tabla
+                            productTableBody.append(`
+                                <tr>
+                                    <td>${product.idProducto}</td>
+                                    <td>${product.nombre}</td>
+                                    <td>${product.descripcion}</td>
+                                    <td>${product.price}</td>
+                                    <td>${product.stock}</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(${product.idProducto})">Eliminar</button>
+                                    </td>
+                                </tr>
+                            `);
+
+                            // Agregar producto al selector
+                            productSelect.append(new Option(product.nombre, product.idProducto));
+                        });
+
+                        // Asignar evento de modificación de stock
+                        $('#increase-btn').on('click', function() {
+                            updateStock(true); // Aumentar stock
+                        });
+
+                        $('#decrease-btn').on('click', function() {
+                            updateStock(false); // Disminuir stock
+                        });
+
+                        $('#stock-form').on('submit', function(e) {
+                            e.preventDefault();
+                            const selectedProductId = $('#product-select').val();
+                            const stockAmount = parseInt($('#stock-amount').val(), 10);
+                            if (selectedProductId && stockAmount > 0) {
+                                updateStockAmount(selectedProductId, stockAmount);
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al cargar los productos:', error);
+                    }
+                });
+            }
+
+            // Aumentar o disminuir el stock
+            function updateStock(isIncrease) {
+                const selectedProductId = $('#product-select').val();
+                const stockAmount = parseInt($('#stock-amount').val(), 10);
+                if (selectedProductId && stockAmount > 0) {
+                    const newStock = isIncrease ? stockAmount : -stockAmount;
+                    updateStockAmount(selectedProductId, newStock);
+                }
+            }
+
+            // Actualizar el stock del producto en la base de datos
+            function updateStockAmount(productId, stockAmount) {
+                $.ajax({
+                    url: 'http://localhost:8001/api/productos/' + productId + '/', // URL de la API
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id: productId,
+                        cantidad: stockAmount
+                    }),
+                    success: function(response) {
+                        alert(`Stock actualizado para ${response.producto}: ${response.nuevo_stock}`);
+                        loadProducts();  // Recargar productos para mostrar el cambio
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al actualizar el stock:', error);
+                    }
+                });
+            }
+
+            // Eliminar producto
+            window.deleteProduct = function(id) {
+                if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+                    $.ajax({
+                        url: `http://localhost:8001/api/productos/${id}/`,
+                        type: 'DELETE',
+                        success: function(response) {
+                            alert('Producto eliminado correctamente');
+                            loadProducts();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error al eliminar el producto:', error);
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

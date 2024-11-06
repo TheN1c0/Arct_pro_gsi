@@ -203,27 +203,16 @@
 
 
     if (!emailAdmin || !passwordAdmin) {
-
       alert('Por favor, introduce tus credenciales de administrador.');
-
       return;
-
     }
 
-
-
     const url = 'http://localhost:8001/api/token/';
-
     const credentials = { email: emailAdmin, password: passwordAdmin };
-
-
-
     const response = await fetch(url, {
 
       method: 'POST',
-
       headers: { 'Content-Type': 'application/json' },
-
       body: JSON.stringify(credentials)
 
     });
@@ -233,15 +222,11 @@
     if (response.ok) {
 
       const data = await response.json();
-
       localStorage.setItem('token', data.access);
-
       alert('Inicio de sesión exitoso como Administrador.');
-
       window.location.href = '{% url "dashboard" %}';
 
     } else {
-
       alert('Error en el inicio de sesión. Por favor verifica tus credenciales.');
 
     }
@@ -251,11 +236,8 @@
 
 
   document.getElementById('collaborator-login-form').addEventListener('submit', async function(event) {
-
     event.preventDefault();
-
     const emailCollaborator = document.getElementById('collaborator-email').value;
-
     const passwordCollaborator = document.getElementById('collaborator-password').value;
 
 

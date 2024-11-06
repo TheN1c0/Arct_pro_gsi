@@ -28,9 +28,22 @@
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
+            display: inline-block; /* Asegura que los enlaces estén en línea */
         }
         nav a:hover {
             background: #0056b3;
+        }
+        /* Estilo para separar el enlace "Cerrar sesión" */
+        .logout {
+            margin-top: 20px; /* Espacio adicional antes del enlace de cerrar sesión */
+            background: #dc3545; /* Rojo para diferenciarlo */
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .logout:hover {
+            background: #c82333; /* Rojo más oscuro al pasar el ratón */
         }
         .content {
             background: #fff;
@@ -83,10 +96,13 @@
     </header>
     
     <nav>
-        <a href="{% url 'agregar_producto' %}">Agregar Productos</a>
-        <a href="{% url 'productos_stock'%}">Ver Productos</a>
-        <a href="{% url 'administracion_pedidos' %}">Ver Pedidos</a>
-        <a onclick="logout()">Cerrar Sesión</a>
+        <a href="{% url 'agregar_producto' %}">Administrar Productos</a>
+        <a href="{% url 'administracion_categorias' %}">Administrar categorías</a>
+        <a href="{% url 'administracion_pedidos' %}">Agregar Pedidos</a>
+        <a href="{% url 'ver_pedidos' %}">Ver Pedidos</a>
+        <a href="{% url 'productos_stock'%}">Ver Stock</a>
+        <!-- Añadimos un margen superior al enlace de cerrar sesión -->
+        <a class="logout" onclick="logout()">Cerrar Sesión</a>
     </nav>
 
     <div class="content">
@@ -94,8 +110,6 @@
         <p>Seleccione una opción en el menú para continuar.</p>
     </div>
 </body>
-
-
 
 <script>
 function logout() {
