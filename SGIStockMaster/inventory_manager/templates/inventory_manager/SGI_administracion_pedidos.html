@@ -82,6 +82,8 @@
 
         <!-- Mensaje de éxito o error -->
         <div id="message" class="mt-4"></div>
+        <br>
+        <button onclick="eliminarPedidos()">Eliminar Todos los Pedidos</button>
     </div>
 
     <script>
@@ -225,6 +227,35 @@
     });
 });
 
+
+    // Función que se ejecuta al hacer clic en el botón de eliminar
+    function eliminarPedidos() {
+            // Pide la contraseña
+            var password = prompt("Por favor ingresa la contraseña para eliminar todos los pedidos:");
+            
+            // Verifica si la contraseña es correcta
+            if (password === "admin") {
+                // Si la contraseña es correcta, hace la solicitud API
+                fetch('http://127.0.0.1:8001/api/eliminar_pedidos/', {
+                    method: 'DELETE',  // Tipo de solicitud (DELETE para eliminar)
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Muestra un mensaje si la solicitud es exitosa
+                    alert(data.mensaje || "Pedidos eliminados exitosamente.");
+                })
+                .catch(error => {
+                    // Muestra un mensaje de error si algo sale mal
+                    alert("Error al eliminar los pedidos: " + error);
+                });
+            } else {
+                // Si la contraseña no es correcta
+                alert("Contraseña incorrecta. No se eliminaron los pedidos.");
+            }
+        }
 
         });
     </script>
