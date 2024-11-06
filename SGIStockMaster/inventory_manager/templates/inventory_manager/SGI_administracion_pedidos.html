@@ -92,7 +92,7 @@
 
 
             
-    const detallesEstructurados = [];
+            const detallesEstructurados = [];
 
 
 
@@ -115,7 +115,7 @@
                                 <td>${product.stock}</td>
                                 <td><input type="number" id="cantidad-${product.idProducto}" class="form-control" min="1" value="1" max="${product.stock}"></td>
                                 <td>
-                                    <button class="btn btn-danger btn-sm" onclick="agregarDetalleProducto(${product.idProducto}, '${product.nombre}', ${product.price})">+</button>
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="agregarDetalleProducto(${product.idProducto}, '${product.nombre}', ${product.price})">+</button>
                                 </td>
                             </tr>
                         `);
@@ -130,12 +130,16 @@
             window.agregarDetalleProducto = function(idProducto, nombre, precio) {
                 const cantidadInput = $(`#cantidad-${idProducto}`);
                 console.log('cantidadInput',cantidadInput);
+                console.log('cantidadInput.val()',cantidadInput.val());
                 const cantidad = parseInt(cantidadInput.val()) || 1;
+                console.log('detallesPedido',detallesPedido);
                 const detalleExistente = detallesPedido.find(detalle => detalle.idProducto === idProducto);
+                const detalleExistenteEstructurado = detallesEstructurados.find(detalle => detalle.product_id === idProducto);
                 const stockDisponible = parseInt(cantidadInput.attr('max')); // Obtener el stock máximo permitido
 
                 // Verificar si la cantidad total no excede el stock
                 const cantidadTotal = detalleExistente ? detalleExistente.cantidad + cantidad : cantidad;
+                const cantidadTotalEstructurado = detalleExistenteEstructurado ? detalleExistenteEstructurado.cantidad + cantidad : cantidad;
 
                 if (cantidadTotal > stockDisponible) {
                     alert(`No se puede agregar ${cantidad} ${nombre}. Solo quedan ${stockDisponible} en stock.`);
@@ -144,11 +148,12 @@
 
                 if (detalleExistente) {
                     detalleExistente.cantidad += cantidad;
+                    detalleExistenteEstructurado.cantidad += cantidad;
                 } else {
                     detallesPedido.push({ idProducto, nombre, precio, cantidad });
                     let product_id =idProducto;
                     let total =precio;
-                    detallesEstructurados.push({product_id, nombre, total, cantidad})
+                    detallesEstructurados.push({product_id, nombre, total, cantidad});
 
 
                     
@@ -158,6 +163,7 @@
                 alert(`${nombre} agregado al pedido.`);
                 actualizarDetallesPedido();
                 actualizarMontoTotal(); // Actualizar el monto total cuando se agrega un producto
+                console.log('detallesEstructurados',detallesEstructurados);
             };
 
 
@@ -188,7 +194,7 @@
 
             // Enviar pedido con productos seleccionados
             $('#add-order-form').on('submit', function(e) {
-    e.preventDefault();
+            e.preventDefault();
     
     // Crear el objeto con la información del pedido principal
     const orderData = {
