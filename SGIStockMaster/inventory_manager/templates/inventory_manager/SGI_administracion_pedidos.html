@@ -84,6 +84,7 @@
         <div id="message" class="mt-4"></div>
         <br>
         <button onclick="eliminarPedidos()">Eliminar Todos los Pedidos</button>
+        <a href="{% url 'ver_pedidos' %}">Ir a Ver Pedidos</a>
     </div>
 
     <script>
@@ -229,7 +230,11 @@
 
 
     // Función que se ejecuta al hacer clic en el botón de eliminar
-    function eliminarPedidos() {
+    
+
+        });
+
+        function eliminarPedidos() {
             // Pide la contraseña
             var password = prompt("Por favor ingresa la contraseña para eliminar todos los pedidos:");
             
@@ -256,8 +261,6 @@
                 alert("Contraseña incorrecta. No se eliminaron los pedidos.");
             }
         }
-
-        });
     </script>
 </body>
 </html>
