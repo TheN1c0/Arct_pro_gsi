@@ -13,6 +13,7 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="{% static 'css/SGI_inicio.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <style>
 
     
@@ -74,20 +75,22 @@
         <div class="form-group">
 
           <label for="admin-email">Email (Administrador)</label>
-
-          <input type="email" class="form-control" id="admin-email" placeholder="Introduce tu email" value="unadmin@gmail.com">
-
+          <div class="input_estilo">
+          <input type="email" class="input_box" id="admin-email" placeholder="Introduce tu email" value="unadmin@gmail.com">
+          <i class='bx bxs-user'></i>
+          </div>
         </div>
 
         <div class="form-group">
 
           <label for="admin-password">Contraseña</label>
-
-          <input type="password" class="form-control" id="admin-password" placeholder="Introduce tu contraseña" value="unadmin">
-
+          <div class="input_estilo">
+          <input type="password" class="input_box" id="admin-password" placeholder="Introduce tu contraseña" value="unadmin">
+          <i class='bx bxs-lock-alt' ></i>
+          </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión como Administrador</button>
+        <button type="submit" class="boton_iniciarsesion">Iniciar Sesión como Administrador</button>
 
       </form>
 
@@ -102,41 +105,43 @@
       <form id="collaborator-login-form">
 
         <div class="form-group">
-
+          
           <label for="collaborator-email">Email (Colaborador)</label>
-
-          <input type="email" class="form-control" id="collaborator-email" placeholder="Introduce tu email" value="uncollaborador@gmail.com">
-
+          <div class="input_estilo">
+            <input type="email" class="input_box" id="collaborator-email" placeholder="Introduce tu email" value="uncollaborador@gmail.com">
+            <i class='bx bxs-user'></i>
+          </div>
         </div>
 
         <div class="form-group">
 
           <label for="collaborator-password">Contraseña</label>
-
-          <input type="password" class="form-control" id="collaborator-password" placeholder="Introduce tu contraseña" value="uncollaborador">
-
+          <div class="input_estilo">
+            <input type="password" class="input_box" id="collaborator-password" placeholder="Introduce tu contraseña" value="uncollaborador">
+            <i class='bx bxs-lock-alt' ></i>
+          </div>
         </div>
 
-        <button type="submit" class="btn btn-success btn-block">Iniciar Sesión como Colaborador</button>
+        <button type="submit" class="boton_iniciarsesion">Iniciar Sesión como Colaborador</button>
 
       </form>
 
   
 
       <hr>
+      <div class="link_registro">
+        <p >
 
-      <p class="text-center">
+          ¿No tienes cuenta? <a href="{% url 'registrarse' %}">Regístrate aquí</a>
 
-        ¿No tienes cuenta? <a href="{% url 'registrarse' %}">Regístrate aquí</a>
+        </p>
 
-      </p>
+        <p >
 
-      <p class="text-center">
+          ¿Olvidaste tu contraseña? <a href="{% url 'recuperar_contrasena' %}">Recuperar contraseña</a>
 
-        ¿Olvidaste tu contraseña? <a href="{% url 'recuperar_contrasena' %}">Recuperar contraseña</a>
-
-      </p>
-
+        </p>
+      </div>
     </div>
 
   </div>
