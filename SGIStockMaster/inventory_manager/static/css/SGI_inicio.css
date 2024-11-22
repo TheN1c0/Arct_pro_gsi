@@ -1,0 +1,27 @@
+body {
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+  }
+
+  .navbar {
+
+    margin-bottom: 20px;
+
+  }
+
+  .login-container {
+
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .login-form {
+    width: 300px;
+  }
+
