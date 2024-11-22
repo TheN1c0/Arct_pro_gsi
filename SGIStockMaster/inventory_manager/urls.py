@@ -16,7 +16,9 @@ urlpatterns = [
     path('restablecer_contrasena/<str:uidb64>/<str:token>/', views.restablecer_contrasena, name='restablecer_contrasena'),
     path('SGI_colaborador_dashboard/', views.colaborador_dashboard, name='colaborador_dashboard'),
     path('ver_pedidos/', views.ver_pedidos, name='ver_pedidos'),
-    path('control_de_stock/', views.control_de_stock, name='control_de_stock')
+    path('control_de_stock/', views.control_de_stock, name='control_de_stock'),
+    path('validacion_token/<str:uidb64>/<str:token>/', views.validacion_token, name='validacion_token'),
+    path('change_password/<str:uidb64>/<str:token>/', views.change_password, name='change_password')
     
     
 ]

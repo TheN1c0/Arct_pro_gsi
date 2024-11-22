@@ -34,8 +34,13 @@ def ver_pedidos(request):
     return render(request, 'inventory_manager/SGI_ver_pedidos.html')
 def control_de_stock(request):
     return render(request, 'inventory_manager/SGI_control_de_stock.html')
-
-
+def validacion_token(request, uidb64, token):
+    # Redirige a la página de cambio de contraseña con los parámetros
+    return render(request, 'inventory_manager/SGI_validacion_token.html', {'uidb64': uidb64, 'token': token})
+def change_password(request, uidb64, token):
+    # Aquí va la lógica para cambiar la contraseña
+    # Puedes procesar el token y el uidb64 antes de permitir el cambio de contraseña
+    return render(request, 'inventory_manager/SGI_change_password.html', {'uidb64': uidb64, 'token': token})
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse

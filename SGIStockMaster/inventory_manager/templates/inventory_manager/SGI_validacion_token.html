@@ -1,0 +1,71 @@
+<!-- validate-token.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validando...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .loading {
+            text-align: center;
+        }
+        .loading span {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <span>Validando enlace, por favor espera...</span>
+    </div>
+
+    <script>
+        // Obtener la URL completa
+const path = window.location.pathname;
+
+// Usar una expresión regular para capturar los dos parámetros de la ruta
+const regex = /\/validacion_token\/([^\/]+)\/([^\/]+)/;
+const matches = path.match(regex);
+
+// Si la URL tiene la estructura correcta, obtenemos los parámetros
+if (matches && matches.length === 3) {
+    const uidb64 = matches[1];  // Primer parámetro
+    const token = matches[2];    // Segundo parámetro
+
+    console.log('UID:', uidb64, 'Token:', token);  // Verifica que los valores sean correctos
+
+    // Llamar al endpoint de validación
+    fetch(`http://localhost:8001/api/validate-reset-token/${uidb64}/${token}/`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Respuesta de la API:', data);  // Verifica la respuesta
+
+            if (data.status === 'valid') {
+                // Redirigir al formulario para cambiar la contraseña
+                window.location.href = `/change_password/${uidb64}/${token}/`;
+            } else {
+                alert('El enlace no es válido o ha expirado...');
+                console.log('1.', uidb64, token);
+            }
+        })
+        .catch(error => {
+            alert('Error validando el enlace.');
+            console.error(error);
+            console.log('2.', uidb64, token);
+        });
+} else {
+    console.error('Parámetros de URL no encontrados');
+}
+
+    </script>
+</body>
+</html>
+/* window.location.href = '/'; */
