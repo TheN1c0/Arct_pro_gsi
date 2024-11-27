@@ -143,6 +143,7 @@
                     <li><a href="#categoria-{{ categoria_id }}">{{ categoria.nombre }}</a></li>
                 {% endfor %}
             </ul>
+            <button class="btn btn-secondary" onclick="window.history.back()">Volver Atrás</button> 
         </nav>
 
         <!-- Contenido de categorías y productos -->
@@ -175,7 +176,6 @@
                     {% endfor %}
                 </div>
             {% endif %}
-             <button class="btn btn-secondary" onclick="window.history.back()">Volver Atrás</button> 
         </div>
       
     </div>
