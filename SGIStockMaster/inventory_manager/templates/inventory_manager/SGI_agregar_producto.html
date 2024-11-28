@@ -6,14 +6,127 @@
     <title>Gestión de Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #f4f6f8; /* Color de fondo claro */
+            color: #333; /* Texto principal */
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: #34495e;
+            color: #f39c12;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
+        h1 {
+            color: #34495e; /* Azul oscuro del encabezado */
+        }
+    
+        .btn-primary {
+            background-color: #34495e; /* Azul oscuro del botón */
+            border-color: #34495e;
+        }
+    
+        .btn-primary:hover {
+            background-color: #004494; /* Azul más brillante para hover */
+            border-color: #004494;
+        }
+    
+        .btn-secondary {
+            background-color: #f39c12; /* Naranja del primer código */
+            border-color: #f39c12;
+        }
+    
+        .btn-secondary:hover {
+            background-color: #d98c10; /* Naranja más oscuro para hover */
+            border-color: #d98c10;
+        }
+    
+        .table-dark {
+            background-color: #34495e; /* Azul oscuro para encabezado de tabla */
+            color: white;
+        }
+    
+        .modal-content {
+            background-color: white; /* Fondo blanco para el modal */
+            color: #333; /* Texto principal del modal */
+        }
+    
+        .modal-header {
+            background-color: #34495e; /* Azul oscuro en el encabezado del modal */
+            color: white;
+        }
+    
+        .btn-close {
+            color: white; /* Color blanco para el botón de cerrar modal */
+        }
+    
+        .form-label {
+            color: #333; /* Texto de las etiquetas */
+        }
+    
+        .form-control:focus {
+            border-color: #34495e; /* Borde azul oscuro al enfocar */
+            box-shadow: 0 0 0 0.2rem rgba(52, 73, 94, 0.25); /* Sombra suave */
+        }
+    
+        .btn-warning {
+            background-color: #f39c12; /* Naranja para el botón de editar */
+            border-color: #f39c12;
+            color: white;
+        }
+    
+        .btn-warning:hover {
+            background-color: #d98c10;
+            border-color: #d98c10;
+        }
+    
+        .btn-danger {
+            background-color: #a94442; /* Rojo para eliminar */
+            border-color: #a94442;
+            color: white;
+        }
+    
+        .btn-danger:hover {
+            background-color: #922d2d; /* Rojo más oscuro */
+            border-color: #922d2d;
+        }
+    
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(52, 73, 94, 0.05); /* Rayas claras para filas */
+        }
+    
+        .table-hover tbody tr:hover {
+            background-color: rgba(52, 73, 94, 0.1); /* Fila destacada al pasar el mouse */
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #34495e;
+            color: white;
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        
+    </style>
+    
 </head>
 <body class="bg-light">
+    <header>
+        Control de Stock
+    </header>
 
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Gestión de Productos</h1>
-        
+    <div class="container mt-5">  
         <!-- Botón para agregar producto -->
         <div class="d-flex justify-content-end mb-3">
+            <button class="btn btn-secondary" onclick="window.history.back()">Volver Atrás</button>
             <button class="btn btn-primary" onclick="showAddProductModal()">Agregar Producto</button>
         </div>
 
@@ -113,8 +226,9 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-secondary" onclick="window.history.back()">Volver Atrás</button>
-
+    <footer>
+        &copy; 2024 Sistema de Gestión de Inventario - Todos los derechos reservados.
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

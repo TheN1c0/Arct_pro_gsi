@@ -15,70 +15,108 @@
     body {
       background-color: #f4f6f8;
       color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     header {
-      background-color: #3a7bd5;
-      color: white;
+      background-color: #34495e;
+      color: #f39c12;
       padding: 20px;
       text-align: center;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .container {
+      flex: 1;
       display: flex;
-      justify-content: space-around;
       flex-wrap: wrap;
-      padding: 20px;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 40px 20px;
     }
 
     .card {
-      width: 300px;
+      width: 280px;
       background-color: white;
-      margin: 20px;
-      border-radius: 8px;
+      border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      transition: transform 0.3s ease;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .card:hover {
       transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     }
 
     .card h3 {
-      background-color: #3a7bd5;
+      background-color: #34495e;
       color: white;
+      font-size: 1.4rem;
+      text-align: center;
       padding: 15px;
-      border-radius: 8px 8px 0 0;
+      margin: 0;
     }
 
     .card p {
-      padding: 15px;
+      padding: 15px 20px;
       font-size: 1rem;
       color: #666;
+      line-height: 1.5;
+      text-align: justify;
     }
 
     .card a {
       display: block;
       text-decoration: none;
+      text-align: center;
       color: white;
-      background-color: #3a7bd5;
-      padding: 10px;
-      margin: 15px;
+      background-color: #34495e;
+      padding: 12px 0;
+      margin: 10px 20px;
       border-radius: 5px;
+      font-size: 1rem;
       transition: background-color 0.3s ease;
     }
 
     .card a:hover {
-      background-color: #2f5da3;
+      background-color: #004494;
     }
 
     footer {
       text-align: center;
-      padding: 10px;
+      padding: 15px;
+      background-color: #34495e;
+      color: white;
       font-size: 0.9rem;
-      color: #666;
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .logout-container {
+      display: flex;
+      justify-content: center; /* Centra el botón horizontalmente */
+      margin: 20px auto; /* Espaciado con respecto al contenido */
+  }
+
+    .btn-logout {
+        background-color: #f39c12; /* Naranja característico */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-logout:hover {
+        background-color: #d98c10; /* Naranja más oscuro */
+        transform: scale(1.05); /* Efecto de agrandamiento */
     }
   </style>
 </head>
@@ -102,36 +140,25 @@
 
     <div class="card">
       <h3>Ver Pedidos</h3>
-      <p>Ver el estado de los pedidos.</p>
+      <p>Consulta el estado actual de los pedidos realizados y su progreso.</p>
       <a href="{% url 'ver_pedidos' %}">Ir a Ver Pedidos</a>
-    </div> 
-    <a onclick="logout()">Cerrar Sesión</a>
-  <!--   <div class="card">
-      <h3>Historial de Movimientos</h3>
-      <p>Consulta el historial de entradas y salidas de productos del inventario.</p>
-      <a href="historial_movimientos.html">Ir a Historial</a>
-    </div>
-
-    <div class="card">
-      <h3>Reportes</h3>
-      <p>Genera reportes detallados del inventario y estado de pedidos.</p>
-      <a href="reportes.html">Ir a Reportes</a>
-    </div>
+    </div>  
   </div>
 
+  <div class="logout-container">
+    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+  </div> 
 
-
-
-
- -->
   <footer>
     &copy; 2024 Sistema de Gestión de Inventario - Todos los derechos reservados.
   </footer>
-  <script>
-    function logout() {
-        localStorage.clear();  // Borra todo el localStorage
-        window.location.href = '/inicio/';  // Redirige a la página de inicio
-    }
-    </script>
+
 </body>
+
+<script>
+  function logout() {
+      localStorage.clear();  // Borra todo el localStorage
+      window.location.href = '/inicio/';  // Redirige a la página de inicio
+  }
+  </script>
 </html>
